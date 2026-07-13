@@ -59,5 +59,7 @@ def login():
                     return redirect (url_for("client.dashboard"))
             flash("Invalid Email or Password" , "danger")
             return render_template("login.html" , form=form)
+        flash("Invalid Email or Password" , "danger")
+        return render_template("login.html" , form=form)
     
     return render_template("login.html" , form=form)
