@@ -1,6 +1,7 @@
 from flask import render_template , redirect , url_for , flash 
+from flask_login import login_user
 from . import auth_bp
-from .forms import RegisterationForm , Loginform
+from .forms import RegisterationForm , LoginForm
 from app.models import User , Freelancer_profile , Client_profile
 from app.extensions import db , bcrypt
 @auth_bp.route("/register" , methods = ["GET","POST"])
@@ -45,20 +46,21 @@ def register():
 
 @auth_bp.route("/login" , methods=['GET' , 'POST'])
 def login():
-    form = Loginform()
+    form = LoginForm()
     if form.validate_on_submit():
         existing_user = User.query.filter_by(email=form.email.data).first()
         if existing_user:
-            password = existing_user.password
-            role = existing_user.role
-            if bcrypt.check_password_hash(password , form.password.data):
-                if role == "freelancer":
-                    flash("Login Sucessful" , "Success")
-                    return redirect(url_for("Freelancer.dashboard"))
-                else:
-                    flash("Login Sucessful" , "Success")
-                    return redirect (url_for("client.dashboard"))
+            if bcrypt.check_password_hash(existing_user.password , form.password.data):
+                login_user(existing_user , remember=form.remember.data)
+                flash("Login Sucessful" , "Success")
+                return redirect(url_for("freelancer.dashboard"))              
+            if existing_user.role == "freelancer":
+                flash("Login Sucessful" , "Success")
+                return redirect(url_for("freelancer.dashboard"))
+            else:
+                flash("Login Sucessful" , "Success")
+                return redirect (url_for("client.dashboard"))
         flash("Invalid Email or Password" , "danger")
-        return render_template("login.html")
+        return render_template("login.html" , form=form)
     
     return render_template("login.html" , form=form)

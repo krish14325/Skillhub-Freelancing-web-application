@@ -23,7 +23,7 @@ class RegisterationForm(FlaskForm):
     role = SelectField("Role", choices=[("client" , "Client"),("freelancer" , "Freelancer")] , validators=[DataRequired()])
     submit = SubmitField("Register")
 
-class Loginform(FlaskForm):
+class LoginForm(FlaskForm):
     email = StringField("Email" , validators=[DataRequired() , Email()])
     password = PasswordField("Password" , validators=[DataRequired()])
     remember = BooleanField("Remember Me")
