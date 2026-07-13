@@ -1,6 +1,6 @@
 from flask import render_template , redirect , url_for , flash 
 from . import auth_bp
-from .forms import RegisterationForm
+from .forms import RegisterationForm , Loginform
 from app.models import User , Freelancer_profile , Client_profile
 from app.extensions import db , bcrypt
 @auth_bp.route("/register" , methods = ["GET","POST"])
@@ -42,3 +42,23 @@ def register():
         return redirect(url_for("auth.login"))
         
     return render_template("register.html" , form=form)
+
+@auth_bp.route("/login" , methods=['GET' , 'POST'])
+def login():
+    form = Loginform()
+    if form.validate_on_submit():
+        existing_user = User.query.filter_by(email=form.email.data).first()
+        if existing_user:
+            password = existing_user.password
+            role = existing_user.role
+            if bcrypt.check_password_hash(password , form.password.data):
+                if role == "freelancer":
+                    flash("Login Sucessful" , "Success")
+                    return redirect(url_for("Freelancer.dashboard"))
+                else:
+                    flash("Login Sucessful" , "Success")
+                    return redirect (url_for("client.dashboard"))
+        flash("Invalid Email or Password" , "danger")
+        return render_template("login.html")
+    
+    return render_template("login.html" , form=form)

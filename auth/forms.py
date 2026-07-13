@@ -4,7 +4,8 @@ from wtforms import (
     PasswordField,
     EmailField,
     SelectField,
-    SubmitField
+    SubmitField,
+    BooleanField
 )
 
 from wtforms.validators import (
@@ -21,3 +22,10 @@ class RegisterationForm(FlaskForm):
     confirm_password = PasswordField("Confirm_Password", validators=[ DataRequired() , EqualTo("password" , message="Password Must Match.")])
     role = SelectField("Role", choices=[("client" , "Client"),("freelancer" , "Freelancer")] , validators=[DataRequired()])
     submit = SubmitField("Register")
+
+class Loginform(FlaskForm):
+    email = StringField("Email" , validators=[DataRequired() , Email()])
+    password = PasswordField("Password" , validators=[DataRequired()])
+    remember = BooleanField("Remember Me")
+    submit = SubmitField("Login")
+

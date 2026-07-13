@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Account</title>
+    <title>Login Account</title>
 </head>
 <body>
     {% with messages = get_flashed_messages(with_categories=True) %}
@@ -17,16 +17,11 @@
         {% endif %}
     {% endwith %}
     <header>
-        <h1> Create Account</h1>
+        <h1>Login Account</h1>
     </header>
     <main>
         <form method="POST">
             {{ form.hidden_tag() }}
-
-            <p>
-                {{ form.username.label }}<br>
-                {{ form.username() }}
-            </p>
 
             <p>
                 {{ form.email.label }}<br>
@@ -39,13 +34,8 @@
             </p>
 
             <p>
-                {{ form.confirm_password.label }}<br>
-                {{ form.confirm_password() }}
-            </p>
-
-            <p>
-                {{ form.role.label }}<br>
-                {{ form.role() }}
+                {{ form.remember.label }}
+                {{ form.remember() }}
             </p>
 
             <p>
