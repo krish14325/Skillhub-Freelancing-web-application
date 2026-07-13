@@ -39,7 +39,7 @@ def register():
             
         db.session.add(profile)
         db.session.commit()
-        flash("Registeration Successful! Please Login" , "Success")
+        flash("Registeration Successful! Please Login" , "success")
         return redirect(url_for("auth.login"))
         
     return render_template("register.html" , form=form)
@@ -52,15 +52,12 @@ def login():
         if existing_user:
             if bcrypt.check_password_hash(existing_user.password , form.password.data):
                 login_user(existing_user , remember=form.remember.data)
-                flash("Login Sucessful" , "Success")
-                return redirect(url_for("freelancer.dashboard"))              
-            if existing_user.role == "freelancer":
-                flash("Login Sucessful" , "Success")
-                return redirect(url_for("freelancer.dashboard"))
-            else:
-                flash("Login Sucessful" , "Success")
-                return redirect (url_for("client.dashboard"))
-        flash("Invalid Email or Password" , "danger")
-        return render_template("login.html" , form=form)
+                flash("Login Successful" , "success")         
+                if existing_user.role == "freelancer":
+                    return redirect(url_for("freelancer.dashboard"))
+                else:
+                    return redirect (url_for("client.dashboard"))
+            flash("Invalid Email or Password" , "danger")
+            return render_template("login.html" , form=form)
     
     return render_template("login.html" , form=form)
