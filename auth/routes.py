@@ -54,7 +54,7 @@ def login():
                 login_user(existing_user , remember=form.remember.data)
                 flash("Login Successful" , "success")         
                 if existing_user.role == "freelancer":
-                    return redirect(url_for("freelancer.dashboard"))
+                    return redirect(url_for("freelancer_bp.dashboard"))
                 else:
                     return redirect (url_for("client.dashboard"))
             flash("Invalid Email or Password" , "danger")

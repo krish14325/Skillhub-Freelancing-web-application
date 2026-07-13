@@ -2,6 +2,7 @@ from flask import Flask
 from app.config import Config
 from app.extensions import db , migrate , bcrypt , login_manager
 from auth import auth_bp
+from freelancer import freelancer_bp
 
 def create_app():
     
@@ -11,6 +12,7 @@ def create_app():
     db.init_app(app)
     bcrypt.init_app(app)
     login_manager.init_app(app)
+    login_manager.login_view = "auth.login"
     from app.models import User
     @login_manager.user_loader
     def load_user(user_id):
@@ -18,7 +20,9 @@ def create_app():
     migrate.init_app(app , db)
     
     app.register_blueprint(auth_bp)
+    app.register_blueprint(freelancer_bp)
     return app
+
 
 
 
