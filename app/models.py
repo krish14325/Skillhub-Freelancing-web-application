@@ -30,6 +30,26 @@ class Freelancer_profile(db.Model):
     
     skills = db.Column(db.Text)
     
+    full_name = db.Column(db.String(100))
+    
+    bio = db.Column(db.Text)
+    
+    experience = db.Column(db.String(100))
+    
+    education = db.Column(db.String(150))
+    
+    hourly_rate = db.Column(db.Integer)
+
+    country = db.Column(db.String(100))
+    
+    city = db.Column(db.String(100))
+    
+    linkedin = db.Column(db.String(200))
+    
+    github = db.Column(db.String(200))
+    
+    portfolio = db.Column(db.String(200))
+    
     user = db.relationship("User" , back_populates="freelancer_profile")
     
     services = db.relationship("Service" , back_populates = "freelancer" , cascade = "all, delete-orphan")
