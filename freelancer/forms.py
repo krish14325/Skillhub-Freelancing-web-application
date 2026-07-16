@@ -21,4 +21,13 @@ class ProfileForm(FlaskForm):
     github = StringField("GitHub" , validators=[DataRequired()])
     portfolio = StringField("Portfolio" , validators=[DataRequired()])
     submit = SubmitField("Submit")
+    
+class ServiceForm(FlaskForm):
+    title = StringField("Service Title" , validators=[DataRequired()])
+    description = StringField("Description" , validators=[DataRequired()])
+    price = IntegerField("Price" , validators=[DataRequired()])
+    delivery_time = StringField("Delivery Time" , validators=[DataRequired()])
+    category = StringField("Category" , validators=[DataRequired()])
+    service_image = StringField("Service Image" , validators=[DataRequired()])
+    submit = SubmitField("Add Service" , validators=[DataRequired()])
 
