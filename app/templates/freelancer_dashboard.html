@@ -31,9 +31,25 @@
         </a>
         <br>
         <br>
-        <a href="/freelancer/add_service">
+        <a href="{{ url_for("freelancer_bp.add_service")}}">
         <button>Add Service</button>
         </a>
+
+        <p><strong>My Services</strong></p>
+            {% if services %}
+                {% for service in services %}
+                <div>
+                    <h3>Title :- {{ service.title }}</h3>
+                    <p>Description :- {{ service.description }}</p>
+                    <p>Price :- {{ service.price }}</p>
+                    <p>Delivery Time :- {{ service.delivery_time }} Days</p>
+                    <a href="{{ url_for("freelancer_bp.edit_service",service_id=service.id) }}">
+                        <button>Edit</button>
+                    </a>
+                    <hr>
+                </div>
+                {% endfor %}
+            {% endif %}
     </main>
 </body>
 </html>

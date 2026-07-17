@@ -8,7 +8,9 @@ from app.extensions import db
 @freelancer_bp.route("/dashboard")
 @login_required
 def dashboard():
-    return render_template("freelancer_dashboard.html")
+    profile = Freelancer_profile.query.filter_by(user_id=current_user.id).first()
+    services = Service.query.filter_by(freelancer_id = profile.id).all()
+    return render_template("freelancer_dashboard.html" , services=services)
 
 @freelancer_bp.route("/profile" , methods=["GET" , "POST"])
 @login_required
@@ -67,4 +69,30 @@ def add_service():
         flash("Service Added Successfully!" , "success")
         return redirect(url_for("freelancer_bp.dashboard"))
     return render_template("add_service.html" , form=form)
+
+@freelancer_bp.route("/edit_service/<int:service_id>" , methods=["GET" , "POST"])
+@login_required
+def edit_service(service_id):
+    service = Service.query.get_or_404(service_id)
+    form = ServiceForm()
+    if form.validate_on_submit():
+        service.title = form.title.data
+        service.description = form.description.data
+        service.price = form.price.data
+        service.delivery_time = form.delivery_time.data
+        service.category = form.category.data
+        service.service_image = form.service_image.data
+        db.session.commit()
+        flash("Service Updated Successfully" , "success")
+        return redirect(url_for("freelancer_bp.dashboard"))
+    form.title.data = service.title
+    form.description.data = service.description
+    form.price.data = service.price
+    form.delivery_time.data = service.delivery_time
+    form.category.data = service.category
+    form.service_image.data = service.service_image
+    return render_template("add_service.html" , form=form)
+
+    
+    
     
