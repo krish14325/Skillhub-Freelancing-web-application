@@ -101,5 +101,3 @@ def delete(service_id):
     db.session.commit()
     flash("Service Deleted Successfully!","success")
     return redirect(url_for("freelancer_bp.dashboard"))
-    
-    

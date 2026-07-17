@@ -56,7 +56,7 @@ def login():
                 if existing_user.role == "freelancer":
                     return redirect(url_for("freelancer_bp.dashboard"))
                 else:
-                    return redirect (url_for("client.dashboard"))
+                    return redirect (url_for("Client.dashboard"))
             flash("Invalid Email or Password" , "danger")
             return render_template("login.html" , form=form)
         flash("Invalid Email or Password" , "danger")
