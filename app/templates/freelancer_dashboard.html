@@ -46,6 +46,11 @@
                     <a href="{{ url_for("freelancer_bp.edit_service",service_id=service.id) }}">
                         <button>Edit</button>
                     </a>
+                    <br>
+                    <br>
+                    <a href="{{ url_for("freelancer_bp.delete",service_id=service.id) }}">
+                        <button>Delete</button>
+                    </a>
                     <hr>
                 </div>
                 {% endfor %}

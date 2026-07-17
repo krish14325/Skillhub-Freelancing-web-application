@@ -93,6 +93,13 @@ def edit_service(service_id):
     form.service_image.data = service.service_image
     return render_template("add_service.html" , form=form)
 
-    
+@freelancer_bp.route("/delete_service/<int:service_id>")
+@login_required
+def delete(service_id):
+    service = Service.query.get_or_404(service_id)
+    db.session.delete(service)
+    db.session.commit()
+    flash("Service Deleted Successfully!","success")
+    return redirect(url_for("freelancer_bp.dashboard"))
     
     
