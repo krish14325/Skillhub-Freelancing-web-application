@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header><h1>Service Detail<h1></header>
+    <main>
+        <p><h3>Freelancer Name :- {{service.freelancer.full_name}}</h3></p>
+        <p><h3>Bio :- {{service.freelancer.bio}}</h3></p>
+        <p><h3>hourly_rate :- {{service.freelancer.hourly_rate}}</h3></p>
+        <p><strong>Title :- {{service.title}}</strong></p>
+        <p>Description :- {{service.description}}</p>
+        <p>Price :- {{service.price}}</p>
+        <p>Delivery Time :- {{service.delivery_time}} Days </p>
+        <a href="/client/dashboard">
+            <button>Back</button>
+        </a>
+        <a href="#">
+            <button>Hire Now</button>
+        </a>
+    </main>
+</body>
+</html>

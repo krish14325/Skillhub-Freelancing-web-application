@@ -7,22 +7,31 @@ from .forms import ProfileForm
 @client.route("/dashboard")
 @login_required
 def dashboard():
-    flash("login Successsfully!","success")
-    return render_template("client_dashboard.html")
+    services = Service.query.filter_by(status="active").all()
+    return render_template("client_dashboard.html", services=services)
 
 @client.route("/profile" , methods=["GET","POST"])
 @login_required
 def profile():
     form = ProfileForm()
-    client_id = Client_profile.query.filter_by(user_id=current_user.id).first()
+    profile = Client_profile.query.filter_by(user_id=current_user.id).first()
     if form.validate_on_submit():
-        client_id.company_name = form.company_name.data
-        client_id.company_logo = form.company_logo.data
-        client_id.website = form.website.data
-        client_id.description = form.description.data
-        
+        profile.company_name = form.company_name.data
+        profile.company_logo = form.company_logo.data
+        profile.website = form.website.data
+        profile.description = form.description.data
         db.session.commit()
         flash("Profile Created Successfully" , "success")
         return redirect(url_for("Client.dashboard"))
+    form.company_name.data = profile.company_name
+    form.company_logo.data = profile.company_logo
+    form.website.data = profile.website
+    form.description.data = profile.description
     return render_template("client_profile.html" , form=form)
+
+@client.route("/services/<int:service_id>")
+@login_required
+def services(service_id):
+    service = Service.query.get_or_404(service_id)
+    return render_template("service_detail.html" , service=service)
         

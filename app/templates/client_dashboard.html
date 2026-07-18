@@ -29,8 +29,23 @@
         <a href="/client/profile">
         <button>Complete Profile</button>
         </a>
-        <br>
-        <br>
+        <hr>
+        <hr>
+        <p><strong>Explore</strong></p>
+        {% if services %}
+            {% for service in services %}
+                <div>
+                    <p>Title :- {{service.title}}</p>
+                    <p>Price :- {{service.price}}</p>
+                    <p>status :- {{service.status}}</p>
+                    <a href="{{url_for("Client.services",service_id=service.id)}}">
+                        <button>View Details</button>
+                    </a>
+                </div>
+                <hr>
+            {% endfor %}
+        {% endif %}
+
     </main>
 </body>
 </html>
