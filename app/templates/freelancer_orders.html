@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incoming Orders</title>
+</head>
+<body>
+    <header><h1>Incoming Orders<h1></header>
+    <main>
+        {% if orders %}
+            {% for order in orders %}
+                <div>
+                    <h3>{{ order.service.title }}</h3>
+                    <p>Client :- {{ order.client.company_name}}</p>
+                    <p> Price :- {{ order.price_at_purchase}}</p>
+                    <p>Status :- {{order.status}}</p>
+                    <a href="#">
+                        <button>view details</button>
+                    </a>
+                <hr>
+                </div>
+                
+            {% endfor %}
+            {% else %}
+                <h3> No Orders Yet </h3>
+        {% endif %}
+        <a href="/freelancer/dashboard">
+            <button>Back</button>
+        </a>
+    </main>
+</body>
+</html>

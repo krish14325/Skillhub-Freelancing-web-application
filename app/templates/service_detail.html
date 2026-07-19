@@ -18,7 +18,7 @@
         <a href="/client/dashboard">
             <button>Back</button>
         </a>
-        <a href="#">
+        <a href="{{ url_for("Client.hire" , service_id=service.id )}}">
             <button>Hire Now</button>
         </a>
     </main>

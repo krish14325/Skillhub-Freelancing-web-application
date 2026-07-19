@@ -35,3 +35,28 @@ def services(service_id):
     service = Service.query.get_or_404(service_id)
     return render_template("service_detail.html" , service=service)
         
+@client.route("/hire/<int:service_id>")
+@login_required
+def hire(service_id):
+    services = Service.query.get_or_404(service_id)
+    client = Client_profile.query.filter_by(user_id = current_user.id).first()
+    order = Order(
+        client_id = client.id,
+        service_id = services.id,
+        price_at_purchase = services.price
+    )
+    db.session.add(order)
+    db.session.commit()
+    flash("Order Created Successfully!" , "success")
+    return redirect(url_for("Client.dashboard"))
+
+@client.route("/My_Orders", methods=["GET" , "POST"])
+@login_required
+def my_orders():
+    client = Client_profile.query.filter_by(user_id=current_user.id).first()
+    my_order = Order.query.filter_by(client_id = client.id).all()
+    return render_template("myorders.html" , orders = my_order)
+
+
+    
+    

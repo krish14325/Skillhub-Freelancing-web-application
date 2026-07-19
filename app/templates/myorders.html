@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders</title>
+</head>
+<body>
+    <header><h1>My Orders<h1></header>
+    <main>
+        {% if orders %}
+            {% for order in orders %}
+                <div>
+                    <h3> Title :- {{order.service.title}}</h3>
+                    <p> Price :- {{order.price_at_purchase}}</p>
+                    <p> Status :- {{order.status}}</p>
+                    <a href="#">
+                        <button>Full Detail</button>
+                    </a>
+                    <hr>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </main>
+</body>
+</html>

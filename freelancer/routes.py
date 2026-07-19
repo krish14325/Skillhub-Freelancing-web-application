@@ -101,3 +101,13 @@ def delete(service_id):
     db.session.commit()
     flash("Service Deleted Successfully!","success")
     return redirect(url_for("freelancer_bp.dashboard"))
+
+@freelancer_bp.route("/orders")
+@login_required
+def freelancer_orders():
+    profile = Freelancer_profile.query.filter_by(user_id = current_user.id).first()
+    orders = []
+    for service in profile.services:
+        orders.extend(service.orders)
+        
+    return render_template("freelancer_orders.html" , orders=orders)

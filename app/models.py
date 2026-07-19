@@ -133,7 +133,7 @@ class Order(db.Model):
     
     completed_at = db.Column(db.DateTime)
     
-    review = db.relationship("Review" , back_populates="order" , uselist=False , cascade=("all , delete-orphan"))
+    review = db.relationship("Review" , back_populates="order" , uselist=False , cascade = "all , delete-orphan")
     
     client = db.relationship(
     "Client_profile",
