@@ -2,7 +2,7 @@ from flask import render_template , redirect , url_for , flash
 from flask_login import login_required , current_user
 from . import freelancer_bp
 from .forms import ProfileForm , ServiceForm
-from app.models import Freelancer_profile , Service
+from app.models import Freelancer_profile , Service , Order
 from app.extensions import db
 
 @freelancer_bp.route("/dashboard")
@@ -111,3 +111,9 @@ def freelancer_orders():
         orders.extend(service.orders)
         
     return render_template("freelancer_orders.html" , orders=orders)
+
+@freelancer_bp.route("/order/<int:order_id>")
+@login_required
+def order_details(order_id):
+    order_detail = Order.query.get_or_404(order_id)
+    return render_template("order_detail.html" , order=order_detail)

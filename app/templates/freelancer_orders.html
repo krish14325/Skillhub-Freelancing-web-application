@@ -15,7 +15,7 @@
                     <p>Client :- {{ order.client.company_name}}</p>
                     <p> Price :- {{ order.price_at_purchase}}</p>
                     <p>Status :- {{order.status}}</p>
-                    <a href="#">
+                    <a href="{{ url_for("freelancer_bp.order_details" , order_id=order.id)}}">
                         <button>view details</button>
                     </a>
                 <hr>

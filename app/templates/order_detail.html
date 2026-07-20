@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+</head>
+<body>
+    <header><h1> Order Details <h1></header>
+    <main>
+        {% if order %}
+            <div>
+                <h3> Company Name :- {{order.client.company_name}}</h3>
+                <p> Service :- {{order.service.title}}</p>
+                <p> Price :- {{order.service.price}}</p>
+                <p> Status :- {{order.status}}</p>
+                <p> Ordered On :- {{order.ordered_at}}</p>
+                <a href="#">
+                    <button>Accept</button>
+                </a>
+                <a href="#">
+                    <button>Reject</button>
+                </a>
+                <hr>
+            </div>
+        {% endif %}
+    </main>
+</body>
+</html>
