@@ -15,10 +15,10 @@
                 <p> Price :- {{order.service.price}}</p>
                 <p> Status :- {{order.status}}</p>
                 <p> Ordered On :- {{order.ordered_at}}</p>
-                <a href="#">
+                <a href="{{ url_for("freelancer_bp.accept_order" , order_id=order.id)}}">
                     <button>Accept</button>
                 </a>
-                <a href="#">
+                <a href="{{ url_for("freelancer_bp.reject_order" , order_id=order.id)}}">
                     <button>Reject</button>
                 </a>
                 <hr>

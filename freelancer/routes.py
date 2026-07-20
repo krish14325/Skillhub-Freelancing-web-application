@@ -117,3 +117,37 @@ def freelancer_orders():
 def order_details(order_id):
     order_detail = Order.query.get_or_404(order_id)
     return render_template("order_detail.html" , order=order_detail)
+
+@freelancer_bp.route("/accept/<int:order_id>")
+@login_required
+def accept_order(order_id):
+    profile = Freelancer_profile.query.filter_by(user_id = current_user.id).first()
+    order = Order.query.get_or_404(order_id)
+    if order.service.freelancer_id != profile.id:
+        flash("Unauthorised Access" , "success")
+        return redirect(url_for("freelancer_bp.freelancer_orders"))
+    if order.status!="Pending":
+        flash("This Order Has Already Been Processed" , "danger")
+        return redirect(url_for("freelancer_bp.freelancer_orders"))
+    order.status = "Accepted"
+    db.session.commit()
+    flash("Order Accepted" , "success")
+    return redirect(url_for("freelancer_bp.freelancer_orders"))
+
+@freelancer_bp.route("/reject/<int:order_id>")
+@login_required
+def reject_order(order_id):
+    profile = Freelancer_profile.query.filter_by(user_id = current_user.id).first()
+    order = Order.query.get_or_404(order_id)
+    if order.service.freelancer_id != profile.id:
+        flash("Unauthorised Access" , "success")
+        return redirect(url_for("freelancer_bp.freelancer_orders"))
+
+    if order.status!="Pending":
+        flash("This Order Has Already Been Processed" , "danger")
+        return redirect(url_for("freelancer_bp.freelancer_orders"))
+    
+    order.status = "Rejected"
+    db.session.commit()
+    flash("Order Rejected" , "success")
+    return redirect(url_for("freelancer_bp.freelancer_orders"))
