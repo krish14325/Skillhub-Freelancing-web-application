@@ -6,19 +6,44 @@
     <title>My Orders</title>
 </head>
 <body>
+        {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            {% for category , message in messages %}
+
+                <div class="alert alert-{{ category }}">
+                    {{message}}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     <header><h1>My Orders<h1></header>
     <main>
         {% if orders %}
             {% for order in orders %}
-                <div>
-                    <h3> Title :- {{order.service.title}}</h3>
-                    <p> Price :- {{order.price_at_purchase}}</p>
-                    <p> Status :- {{order.status}}</p>
-                    <a href="#">
-                        <button>Full Detail</button>
-                    </a>
-                    <hr>
-                </div>
+                {% if order.status == "Completed" and order.review == None%}
+                    <div>
+                        <h3> Title :- {{order.service.title}}</h3>
+                        <p> Price :- {{order.price_at_purchase}}</p>
+                        <p> Status :- {{order.status}}</p>
+                        <a href="{{url_for("Client.review" , order_id = order.id)}}">
+                            <button>Give Review</button>
+                        </a>
+                        <a href="#">
+                            <button>Full Detail</button>
+                        </a>
+                        <hr>
+                    </div>
+                {% else %}
+                    <div>
+                        <h3> Title :- {{order.service.title}}</h3>
+                        <p> Price :- {{order.price_at_purchase}}</p>
+                        <p> Status :- {{order.status}}</p>
+                        <a href="#">
+                            <button>Full Detail</button>
+                        </a>
+                        <hr>
+                    </div>
+                {% endif %}
             {% endfor %}
         {% endif %}
     </main>

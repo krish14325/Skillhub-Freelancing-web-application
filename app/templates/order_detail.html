@@ -6,6 +6,16 @@
     <title>Order Details</title>
 </head>
 <body>
+        {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            {% for category , message in messages %}
+
+                <div class="alert alert-{{ category }}">
+                    {{message}}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     <header><h1> Order Details <h1></header>
     <main>
         {% if order %}
@@ -20,6 +30,9 @@
                 </a>
                 <a href="{{ url_for("freelancer_bp.reject_order" , order_id=order.id)}}">
                     <button>Reject</button>
+                </a>
+                <a href="{{ url_for("freelancer_bp.completed" , order_id=order.id)}}">
+                    <button>Mark As Completed</button>
                 </a>
                 <hr>
             </div>

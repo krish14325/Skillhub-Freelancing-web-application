@@ -4,6 +4,7 @@ from . import freelancer_bp
 from .forms import ProfileForm , ServiceForm
 from app.models import Freelancer_profile , Service , Order
 from app.extensions import db
+from datetime import datetime
 
 @freelancer_bp.route("/dashboard")
 @login_required
@@ -151,3 +152,23 @@ def reject_order(order_id):
     db.session.commit()
     flash("Order Rejected" , "success")
     return redirect(url_for("freelancer_bp.freelancer_orders"))
+
+@freelancer_bp.route("/completed/<int:order_id>")
+@login_required
+def completed(order_id):
+    profile = Freelancer_profile.query.filter_by(user_id = current_user.id).first()
+    order = Order.query.get_or_404(order_id)
+    if order.service.freelancer_id != profile.id:
+        flash("Unauthorised Access" , "success")
+        return redirect(url_for("freelancer_bp.freelancer_orders"))
+
+    if order.status!="Accepted":
+        flash("Only Accepted Orders Can Be Marked As Completed" , "danger")
+        return redirect(url_for("freelancer_bp.freelancer_orders"))
+    else:
+        order.status = "Completed"
+        order.completed_at = datetime.utcnow()
+        db.session.commit()
+        flash("Order Completed " , "success")
+        return redirect(url_for("freelancer_bp.order_details" , order_id=order.id))
+

@@ -3,7 +3,7 @@ from flask import render_template , redirect , url_for ,flash
 from app.extensions import db
 from app.models import *
 from flask_login import login_required , current_user
-from .forms import ProfileForm
+from .forms import ProfileForm , ReviewForm
 @client.route("/dashboard")
 @login_required
 def dashboard():
@@ -57,6 +57,32 @@ def my_orders():
     my_order = Order.query.filter_by(client_id = client.id).all()
     return render_template("myorders.html" , orders = my_order)
 
-
+@client.route("/review/<int:order_id>" , methods=["GET" , "POST"])
+@login_required
+def review(order_id):
+    order = Order.query.get_or_404(order_id)
+    form = ReviewForm()
+    if order.client.user_id != current_user.id:
+        flash("Unauthorised User Access" , "danger")
+        return redirect(url_for("Client.my_orders"))
     
+    if order.status != "Completed":
+        flash("You Can Only Review Completed Orders"  , "danger")
+        return (redirect(url_for("Client.my_orders")))
+    
+    if order.review is not None:
+        flash("You  Review Completed Orders"  , "danger")
+        return (redirect(url_for("Client.my_orders")))
+    if form.validate_on_submit():
+        rating = Review(
+            order_id = order_id,
+            rating = int(form.rating.data),
+            comment = form.comment.data,
+        )
+        db.session.add(rating)
+        db.session.commit()
+        flash("Thanks For Giving Your Review" , "success")
+        return redirect(url_for("Client.my_orders"))
+    
+    return render_template("review.html" , form=form , order=order)
     

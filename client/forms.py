@@ -4,6 +4,7 @@ from wtforms import(
     IntegerField,
     SubmitField,
     EmailField,
+    SelectField,
     PasswordField
 )
 
@@ -19,3 +20,17 @@ class ProfileForm(FlaskForm):
     website = StringField("Website" , validators=[DataRequired()])
     description = StringField("Description" , validators=[DataRequired()])
     submit = SubmitField("Create Profile")
+    
+class ReviewForm(FlaskForm):
+    rating= SelectField(
+        "Rating" , choices=[
+            ("1" , "⭐"),
+            ("2" , "⭐⭐"),
+            ("3" , "⭐⭐⭐"),
+            ("4" , "⭐⭐⭐⭐"),
+            ("5" , "⭐⭐⭐⭐⭐")
+        ] , 
+        validators=[DataRequired()]
+    )
+    comment = TextAreaField("Comment" , validators=[DataRequired()])
+    submit = SubmitField("Sumit Review")
