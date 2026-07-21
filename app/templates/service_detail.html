@@ -31,6 +31,30 @@
         <a href="{{ url_for("Client.hire" , service_id=service.id )}}">
             <button>Hire Now</button>
         </a>
+        <h3> Reviews On This Service </h3>
+            {% for order in service.orders %}
+                {% if order.review %}
+                    <div>
+                        <p>
+                            <strong>Rating:</strong>
+                            {{ "⭐" * order.review.rating}}
+                        </p>
+
+                        <p>
+                            <strong>Comment:</strong>
+                            {{ order.review.comment}}
+                        </p>
+
+                        <p>
+                            <strong>Reviewed By:</strong>
+                            {{ order.client.company_name}}
+                        </p>
+                        <hr>
+                    </div>
+                {% else %}
+                    <p><strong>No Reviews Yet</strong></p>
+                {% endif %}
+            {% endfor %}
     </main>
 </body>
 </html>
