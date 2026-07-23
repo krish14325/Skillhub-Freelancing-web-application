@@ -5,7 +5,8 @@ from wtforms import (
     SubmitField,
     TextAreaField , 
     SelectField,
-    IntegerField
+    IntegerField,
+    FileField
 )
 from wtforms.validators import DataRequired
 
@@ -32,3 +33,7 @@ class ServiceForm(FlaskForm):
     service_image = StringField("Service Image" , validators=[DataRequired()])
     submit = SubmitField("Add Service" , validators=[DataRequired()])
 
+class UploadForm(FlaskForm):
+    project_file = FileField("Upload File" , validators=[DataRequired()])
+    submit = SubmitField("Submit" , validators=[DataRequired()])
+    

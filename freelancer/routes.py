@@ -172,3 +172,4 @@ def completed(order_id):
         flash("Order Completed " , "success")
         return redirect(url_for("freelancer_bp.order_details" , order_id=order.id))
 
+

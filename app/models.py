@@ -133,6 +133,10 @@ class Order(db.Model):
     
     completed_at = db.Column(db.DateTime)
     
+    delivered_file = db.Column(db.String(255))
+    
+    delivered_at = db.Column(db.DateTime)
+    
     review = db.relationship("Review" , back_populates="order" , uselist=False , cascade = "all , delete-orphan")
     
     client = db.relationship(
