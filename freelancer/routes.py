@@ -1,10 +1,13 @@
-from flask import render_template , redirect , url_for , flash 
+from flask import render_template , redirect , url_for , flash , current_app
 from flask_login import login_required , current_user
 from . import freelancer_bp
-from .forms import ProfileForm , ServiceForm
+from .forms import ProfileForm , ServiceForm , UploadForm
 from app.models import Freelancer_profile , Service , Order
 from app.extensions import db
 from datetime import datetime
+import os 
+from werkzeug.utils import secure_filename 
+import uuid
 
 @freelancer_bp.route("/dashboard")
 @login_required
@@ -172,4 +175,27 @@ def completed(order_id):
         flash("Order Completed " , "success")
         return redirect(url_for("freelancer_bp.order_details" , order_id=order.id))
 
-
+@freelancer_bp.route("/deliver/<int:order_id>" , methods=["GET","POST"])
+@login_required
+def deliver(order_id):
+    order = Order.query.get_or_404(order_id)
+    form = UploadForm()
+    if form.validate_on_submit():
+        project = form.project_file.data
+        filename = secure_filename(project.filename)
+        unique_filename =  f"{order.id}_{filename}"
+        project.save(
+            os.path.join(
+                current_app.config["UPLOAD_FOLDER"] , unique_filename
+            )
+        )
+        order.delivered_file = unique_filename
+        order.delivered_at = datetime.utcnow()
+        order.status = "Completed"
+        print("inside deliver")
+        db.session.commit()
+        flash("Project delivered successfully" , "success")
+        return redirect(url_for("freelancer_bp.freelancer_orders"))
+    else:
+        print(form.errors)
+    return render_template("deliver_upload.html",form=form , order=order)

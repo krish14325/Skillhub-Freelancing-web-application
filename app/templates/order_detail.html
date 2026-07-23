@@ -34,6 +34,9 @@
                 <a href="{{ url_for("freelancer_bp.completed" , order_id=order.id)}}">
                     <button>Mark As Completed</button>
                 </a>
+                    <a href="{{ url_for("freelancer_bp.deliver" , order_id = order.id)}}">
+                    <button>deliver Project</button>
+                </a>
                 <hr>
             </div>
         {% endif %}
