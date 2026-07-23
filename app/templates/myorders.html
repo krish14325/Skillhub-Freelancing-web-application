@@ -38,11 +38,19 @@
                         <a href="#">
                             <button>Full Detail</button>
                         </a>
-                        <hr>
                     </div>
+                    <br>
                 {% endif %}
+                {% if order.status == "Completed" and order.delivered_file %}
+                    <a href="{{ url_for("Client.download_project" , order_id = order.id)}}">
+                        <button>Download</button>
+                    </a>
+                    <hr>
+                {% endif %}
+                {% else %}
+                    <p> Not Uploaded Yet</p>
             {% endfor %}
-        {% endif %}
+            {% endif %}
     </main>
 </body>
 </html>

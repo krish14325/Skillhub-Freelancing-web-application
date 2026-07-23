@@ -1,9 +1,10 @@
 from . import client
-from flask import render_template , redirect , url_for ,flash
+from flask import render_template , redirect , url_for ,flash , send_from_directory , current_app
 from app.extensions import db
 from app.models import *
 from flask_login import login_required , current_user
 from .forms import ProfileForm , ReviewForm
+import os
 @client.route("/dashboard")
 @login_required
 def dashboard():
@@ -86,3 +87,16 @@ def review(order_id):
     
     return render_template("review.html" , form=form , order=order)
     
+@client.route("/download/<int:order_id>")
+@login_required
+def download_project(order_id):
+    order = Order.query.get_or_404(order_id)
+    if order.client.user_id != current_user.id:
+        flash("Unauthorised User","danger")
+        return redirect(url_for("Client.dashboard"))
+    upload_path = os.path.join(current_app.root_path,".." , "static","uploads")
+    return send_from_directory(
+        upload_path,
+        order.delivered_file,
+        as_attachment = True
+    )
