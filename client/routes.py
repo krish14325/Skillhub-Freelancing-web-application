@@ -1,5 +1,6 @@
 from . import client
-from flask import render_template , redirect , url_for ,flash , send_from_directory , current_app
+from sqlalchemy import or_
+from flask import render_template , redirect , url_for ,flash , send_from_directory , current_app ,request
 from app.extensions import db
 from app.models import *
 from flask_login import login_required , current_user
@@ -8,7 +9,15 @@ import os
 @client.route("/dashboard")
 @login_required
 def dashboard():
-    services = Service.query.filter_by(status="active").all()
+    search = request.args.get("search" , "")
+    if search:
+        services = Service.query.filter(
+            Service.status =="Active" 
+            ,or_(Service.title.like(f"%{search}%") 
+            , Service.description.like(f"%{search}"))).all()
+    else:
+        services = Service.query.filter_by(status="Active").all()
+    
     return render_template("client_dashboard.html", services=services)
 
 @client.route("/profile" , methods=["GET","POST"])
@@ -100,6 +109,4 @@ def download_project(order_id):
         order.delivered_file,
         as_attachment = True
     )
-    
-
     

@@ -36,6 +36,15 @@
         </a>
         <br>
         <br>
+        <form method="GET">
+            <input 
+                type="text"
+                name="search"
+                placeholder="Search Service"
+                value="{{ request.args.get("search","")}}">
+            <button type="submit">Search</button>
+        </form>
+        <hr>
         <p><strong>Explore</strong></p>
         {% if services %}
             {% for service in services %}
