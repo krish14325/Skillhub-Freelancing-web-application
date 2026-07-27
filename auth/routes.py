@@ -12,36 +12,29 @@ def register():
         if existing_user:
             flash ("Email Already Registered. Please Login" , "danger")
             return redirect(url_for("auth.register"))
-        
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode("utf-8")
-        
         user = User(
             username = form.username.data,
             email = form.email.data,
             password = hashed_password,
             role = form.role.data
         )
-        
         db.session.add(user)
         db.session.flush()
-        
         if user.role == "freelancer":
             profile = Freelancer_profile(
                 user_id=user.id,
                 skills=""
             )
-        
         elif user.role == "client":
             profile = Client_profile(
                 user_id=user.id,
                 company_name = "New Company"
-            )
-            
+            )   
         db.session.add(profile)
         db.session.commit()
         flash("Registeration Successful! Please Login" , "success")
-        return redirect(url_for("auth.login"))
-        
+        return redirect(url_for("auth.login")) 
     return render_template("register.html" , form=form)
 
 @auth_bp.route("/login" , methods=['GET' , 'POST'])
@@ -52,7 +45,7 @@ def login():
         if existing_user:
             if bcrypt.check_password_hash(existing_user.password , form.password.data):
                 login_user(existing_user , remember=form.remember.data)
-                flash("Login Successful" , "success")         
+                flash("Login Successful" , "success")     
                 if existing_user.role == "freelancer":
                     return redirect(url_for("freelancer_bp.dashboard"))
                 else:
@@ -61,5 +54,4 @@ def login():
             return render_template("login.html" , form=form)
         flash("Invalid Email or Password" , "danger")
         return render_template("login.html" , form=form)
-    
     return render_template("login.html" , form=form)
